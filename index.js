@@ -20,6 +20,31 @@ app.use(async ({ body, ack, next }) => {
   await next();
 });
 
+app.event("app_home_opened", async ({ event, client }) => {
+  try {
+    await client.views.publish({
+      user_id: event.user,
+      view: {
+        type: "home",
+        blocks: [
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `*Welcome to Internship Agent!* :wave:\n\nThis is your Home tab.`,
+            },
+          },
+          {
+            type: "divider",
+          },
+        ],
+      },
+    });
+  } catch (error) {
+    console.error("Error updating Home tab:", error);
+  }
+});
+
 app.event("app_mention", async ({ event, say }) => {
   await say(`Hey <@${event.user}>! I heard you mention me.`);
 });

@@ -1,5 +1,6 @@
 import bolt from "@slack/bolt";
 import dotenv from "dotenv";
+import axios from "axios";
 
 const { App } = bolt;
 dotenv.config();
@@ -12,7 +13,6 @@ const app = new App({
 });
 
 app.use(async ({ body, ack, next }) => {
-  console.log("Incoming request:", body);
   if (body.type === "url_verification") {
     await ack(body.challenge);
     return;
@@ -32,26 +32,25 @@ app.event("message", async ({ event, say }) => {
       const tempMsg = await app.client.chat.postMessage({
         token: process.env.SLACK_BOT_TOKEN,
         channel: event.channel,
-        text: "_Processing your request..._",
+        text: "typing...",
         thread_ts: threadId,
       });
 
-      let apiResponse;
-      await fetch("https://dummyjson.com/products")
-        .then((res) => res.json())
-        .then((res) => (apiResponse = res));
-      const apiData = apiResponse.products;
-      const total = apiResponse.total;
+      const apiResponse = await axios.post(
+        "http://localhost:8000/slackbot/message",
+        {
+          slack_thread_id: threadId,
+          user_id: 50,
+          message: event.text || "What all can you do?",
+        }
+      );
+      const message = apiResponse.data.ai_message;
 
-      const productBlocks = apiData.slice(0, 5).map((product, idx) => ({
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `*${idx + 1}. ${product.title}*\nPrice: $${product.price}\n${
-            product.description
-          }`,
-        },
-      }));
+      await app.client.chat.delete({
+        token: process.env.SLACK_BOT_TOKEN,
+        channel: event.channel,
+        ts: tempMsg.ts,
+      });
 
       await say({
         thread_ts: threadId,
@@ -60,44 +59,13 @@ app.event("message", async ({ event, say }) => {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `*API Response for:* \"${event.text}\"\n\n*Title:* Products List`,
+              text: message,
             },
           },
           {
             type: "divider",
           },
-          ...productBlocks,
-          {
-            type: "divider",
-          },
-          {
-            type: "context",
-            elements: [
-              {
-                type: "mrkdwn",
-                text: `Total count: ${total}`,
-              },
-            ],
-          },
-          {
-            type: "divider",
-          },
-          {
-            type: "context",
-            elements: [
-              {
-                type: "mrkdwn",
-                text: `:clock1: Response at ${new Date().toLocaleTimeString()}`,
-              },
-            ],
-          },
         ],
-      });
-
-      await app.client.chat.delete({
-        token: process.env.SLACK_BOT_TOKEN,
-        channel: event.channel,
-        ts: tempMsg.ts, // Timestamp of the message to delete
       });
     } catch (error) {
       console.error("API Error:", error);

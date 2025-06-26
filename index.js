@@ -69,8 +69,9 @@ app.event("message", async ({ event, say }) => {
           message: event.text || "What all can you do?",
         }
       );
-
-      const message = apiResponse.data.ai_message;
+      console.log({ apiResponse });
+      const message =
+        apiResponse.data.ai_message || "I'm sorry, I don't understand.";
 
       await app.client.chat.delete({
         token: process.env.SLACK_BOT_TOKEN,

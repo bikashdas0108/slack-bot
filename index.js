@@ -69,6 +69,7 @@ app.event("message", async ({ event, say }) => {
           message: event.text || "What all can you do?",
         }
       );
+
       const message = apiResponse.data.ai_message;
 
       await app.client.chat.delete({
@@ -79,12 +80,13 @@ app.event("message", async ({ event, say }) => {
 
       await say({
         thread_ts: threadId,
+        text: message,
         blocks: [
           {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: message,
+              text: message.slice(0, 2999),
             },
           },
           {
@@ -101,6 +103,6 @@ app.event("message", async ({ event, say }) => {
 
 // Start the app
 (async () => {
-  await app.start(process.env.PORT || 3000);
+  await app.start(process.env.PORT || 3005);
   console.log("⚡ Bot is running!");
 })();

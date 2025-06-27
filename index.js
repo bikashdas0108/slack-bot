@@ -28,14 +28,86 @@ app.event("app_home_opened", async ({ event, client }) => {
         type: "home",
         blocks: [
           {
+            type: "header",
+            text: {
+              type: "plain_text",
+              text: "🎯 VI Agent - Virtual Internships AI Assistant",
+              emoji: true,
+            },
+          },
+          {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `*Welcome to Internship Agent!* :wave:\n\nThis is your Home tab.`,
+              text: "*Welcome to your AI-powered internship candidate management assistant!* :wave:\n\nI'm here to help you streamline your internship candidate search and management process through natural language conversations.",
             },
           },
           {
             type: "divider",
+          },
+          {
+            type: "header",
+            text: {
+              type: "plain_text",
+              text: "🚀 What I Can Do",
+              emoji: true,
+            },
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "*• Candidate Search & Filtering*\nFind interns based on career field, preferred month, availability and projects\n\n*• Shortlist Management*\nAdd promising candidates to your shortlist with simple commands\n\n*• Career Field Exploration*\nBrowse available career fields and their requirements\n\n*• Internship Opportunities*\nDiscover different internship types and their specifications",
+            },
+          },
+          {
+            type: "divider",
+          },
+          {
+            type: "header",
+            text: {
+              type: "plain_text",
+              text: "💬 Quick Start Examples",
+              emoji: true,
+            },
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: '*Try asking me:*\n• "Show me candidates for computer science and IT"\n• "Find all the available candidates"\n• "List all available career fields"\n• "Shortlist candidate ID 12345"\n• "What internship opportunities are available?"',
+            },
+          },
+          {
+            type: "divider",
+          },
+          {
+            type: "context",
+            elements: [
+              {
+                type: "mrkdwn",
+                text: "💡 *Pro Tip:* I maintain conversation context, so you can ask follow-up questions and I'll remember our previous discussion!",
+              },
+            ],
+          },
+          {
+            type: "divider",
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "*🔗 Platform Integration*\nI'm directly connected to the Virtual Internships platform, providing you with real-time access to candidate data and platform features.",
+            },
+          },
+          {
+            type: "context",
+            elements: [
+              {
+                type: "mrkdwn",
+                text: "🛡️ *Secure & Private:* All conversations are isolated and secure, with direct integration to VI's internal systems via MCP protocol.",
+              },
+            ],
           },
         ],
       },

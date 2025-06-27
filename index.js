@@ -57,7 +57,7 @@ app.event("app_home_opened", async ({ event, client }) => {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: "*• Candidate Search & Filtering*\nFind interns based on career field, preferred month, availability and projects\n\n*• Shortlist Management*\nAdd promising candidates to your shortlist with simple commands\n\n*• Career Field Exploration*\nBrowse available career fields and their requirements\n\n*• Internship Opportunities*\nDiscover different internship types and their specifications",
+              text: "*• Candidate Search & Filtering*\nFind interns based on career field, preferred month, availability and projects\n\n*• Shortlist Management*\nAdd promising candidates to your shortlist with simple commands\n\n*• Career Field Exploration*\nBrowse available career fields and their requirements\n\n*• Internship Opportunities*\nDiscover different candidates based on internship opportunities",
             },
           },
           {
